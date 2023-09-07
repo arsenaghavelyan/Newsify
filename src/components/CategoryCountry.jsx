@@ -1,64 +1,70 @@
-import React, { useEffect, useState } from 'react'
-import { API_KEY, NewsAPI_URL } from '../lib/data'
-import { useDispatch, useSelector } from 'react-redux'
-import { handleCategory, selectCategory } from '../store/slices/categorySlice'
-import { handleCountry, selectCountry } from '../store/slices/countrySlice'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { handleCategory } from '../store/slices/categorySlice';
+import { handleCountry } from '../store/slices/countrySlice';
 
 export default function CategoryCountry() {
-
-    const [country, setCountry] = useState("us")
-
-    // const category = useSelector(selectCategory)
-    // const returnCategory = category.map((el) => el.category)
-    // const filterCategory = Array.from(new Set(returnCategory))
-    // console.log(filterCategory);
-    // useEffect(() => {
-    //     fetch(`${NewsAPI_URL}/sources?apiKey=${API_KEY}`).then((response) => {
-    //         return response.json()
-    //     }).then((res) => {
-    //         dispatch(handleCategory({
-    //             res: res.sources
-    //         }))
-    //     })
-    // }, [])
-
+    const [country, setCountry] = useState('us');
+    const [showCategory, setShowCategory] = useState(false);
 
     const categoryData = [
-        {name:"business"},
-        {name:"entertainment"},
-        {name:"general"},
-        {name:"health"},
-        {name:"science"},
-        {name:"sports"},
-        {name:"technology"},
+        { name: 'business' },
+        { name: 'entertainment' },
+        { name: 'general' },
+        { name: 'health' },
+        { name: 'science' },
+        { name: 'sports' },
+        { name: 'technology' },
+    ];
 
-    ]
-
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     function handleClick(name) {
-        dispatch(handleCategory({
-            value:name
-        }))
+        dispatch(handleCategory({ value: name }));
     }
 
+    function toggleCategory() {
+        setShowCategory(!showCategory);
+    }
 
-    
     return (
-        <div className='flex items-center justify-around bg-slate-500 p-[12px]'>
-            <div className='flex justify-between w-[650px] font-thin'>
-                {
-                    categoryData.map((el) => {
-                        return (
-                            <div key={Math.random()} className='flex shadow-[0_0px_10px_rgba(0,0,0,0.5)] p-[3px] rounded-[4px] text-[#FBFAF5]'>
-                                <button onClick={() => handleClick(el.name)}>{el.name}</button>
-                            </div>
-                        )
-                    })
-                }
+        <div className="flex items-center justify-between bg-slate-500 p-[12px]">
+            <div className="flex gap-6">
+                <button
+                    onClick={toggleCategory}
+                    className="text-[#FBFAF5] cursor-pointer md:hidden"
+                >
+                    &#9776;
+                </button>
             </div>
-            <div className='flex gap-6 '>
-                <select onClick={() => dispatch(handleCountry({ country }))} className='bg-slate-700 text-white rounded-2xl' value={country} onChange={(e) => setCountry(e.target.value)} name="for-country" id="for-country">
+
+            <div
+                className={`${showCategory ? 'block' : 'hidden'
+                    } md:flex md:items-center md:justify-around md:w-[650px] font-thin`}
+            >
+                {categoryData.map((el) => {
+                    return (
+                        <div
+                            key={Math.random()}
+                            className="flex shadow-[0_0px_10px_rgba(0,0,0,0.5)] p-[3px] rounded-[4px] text-[#FBFAF5]"
+                        >
+                            <button onClick={() => handleClick(el.name)}>
+                                {el.name}
+                            </button>
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className="flex gap-6">
+                <select
+                    onClick={() => dispatch(handleCountry({ country }))}
+                    className="bg-slate-700 text-white rounded-2xl"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    name="for-country"
+                    id="for-country"
+                >
                     <option value="ar">Argentina</option>
                     <option value="au">Australia</option>
                     <option value="at">Austria</option>
@@ -115,5 +121,5 @@ export default function CategoryCountry() {
                 </select>
             </div>
         </div>
-    )
+    );
 }
