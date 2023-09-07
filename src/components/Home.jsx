@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Popup from './Popup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToBasket, selectSaves } from '../store/slices/saveSlice';
+import Share from './Share';
 
 export default function Home({ info }) {
 
@@ -15,13 +16,6 @@ export default function Home({ info }) {
 
     dispatch(addToBasket({ saveNews: filterSaves }))
   }
-function handleShare() {
-  navigator.share({
-    title: "MDN",
-    text: "Learn web development on MDN!",
-    url: "https://developer.mozilla.org",
-  })
-}
   const [selectedNews, setSelectedNews] = useState(null)
   return (
     <>
@@ -38,15 +32,12 @@ function handleShare() {
             <div className='mt-2 text-[14px]'>
               <h2>{info.description}</h2>
             </div>
-            <div>
-              <a href={info.url} target='black' className='text-blue-700 border-b border-blue-100 hover:border-blue-600 ' >Go to website</a>
-            </div>
           </div>
         </div>
         <div className='flex items-center justify-end mt-[4px] '>
           <span className='border-b hover:border-black'>Save & Share - </span>
           <img src={isSave ? "black-save-icon.png" : "save-icon.png"} onClick={handleSave} className='h-[30px]' />
-          <img src="share-icon.png" className='h-[35px]' onClick={handleShare}/>
+          <Share  info={info}/>
         </div>
       </div>
       {selectedNews && (
